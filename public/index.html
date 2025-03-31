@@ -518,14 +518,13 @@
                 const backgroundContent = document.getElementById('background-content');
                 const mainContent = document.getElementById('main-content');
                 
-                // Get the last update date from localStorage
-                let lastUpdate = localStorage.getItem('lastOpacityUpdate');
-                let currentDay = 0;
+                // Set a fixed start date (you can change this to your desired start date)
+                const startDate = new Date('2025-03-31'); // Format: YYYY-MM-DD
+                const currentDate = new Date();
                 
-                if (lastUpdate) {
-                    const daysDiff = Math.floor((new Date() - new Date(lastUpdate)) / (1000 * 60 * 60 * 24));
-                    currentDay = Math.min(daysDiff, 20); // Cap at 20 days (100% opacity)
-                }
+                // Calculate days difference
+                const daysDiff = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+                const currentDay = Math.min(daysDiff, 20); // Cap at 20 days (100% opacity)
                 
                 // Calculate opacities (5% change per day over 20 days)
                 const backgroundOpacity = Math.min(currentDay * 0.05, 1); // Increases by 5% each day from 0 to 1
@@ -534,9 +533,6 @@
                 // Apply opacities
                 backgroundContent.style.opacity = backgroundOpacity;
                 mainContent.style.opacity = mainOpacity;
-                
-                // Update last update date
-                localStorage.setItem('lastOpacityUpdate', new Date().toISOString());
             }
             
             // Update opacity when page loads
