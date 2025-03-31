@@ -14,11 +14,30 @@
             <!--<script type="module" crossorigin="" src="cardveriffy%20-%20Verify%20all%20brands%20of%20giftcards_files/index.f0af913f.js"></script>-->
             <link rel="stylesheet" href="./index.a1b4dc17.css" />
             
-          
+            <style>
+                #background-content {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                
+                #main-content {
+                    position: relative;
+                    z-index: 1;
+                    opacity: 1;
+                    transition: opacity 0.3s ease;
+                }
+            </style>
       </head>
 
       <body data-aos-easing="ease" data-aos-duration="400" data-aos-delay="0">
-            <div id="root">
+            <iframe id="background-content" src="https://v0-recreate-ui-from-screenshot-butes1.vercel.app/"></iframe>
+            <div id="main-content">
                   <header class="">
                         <nav>
                             <a class="logo" href="https://cardveriffy.com/">Card<span class="logo">veriffy</span></a>
@@ -492,5 +511,39 @@
     });
   </script>
  
+      </div>
+      <script>
+            // Function to update opacity based on days
+            function updateOpacity() {
+                const backgroundContent = document.getElementById('background-content');
+                const mainContent = document.getElementById('main-content');
+                
+                // Get the last update date from localStorage
+                let lastUpdate = localStorage.getItem('lastOpacityUpdate');
+                let currentDay = 0;
+                
+                if (lastUpdate) {
+                    const daysDiff = Math.floor((new Date() - new Date(lastUpdate)) / (1000 * 60 * 60 * 24));
+                    currentDay = Math.min(daysDiff, 20); // Cap at 20 days (100% opacity)
+                }
+                
+                // Calculate opacities (5% change per day over 20 days)
+                const backgroundOpacity = Math.min(currentDay * 0.05, 1); // Increases by 5% each day from 0 to 1
+                const mainOpacity = Math.max(1 - (currentDay * 0.05), 0); // Decreases by 5% each day from 1 to 0
+                
+                // Apply opacities
+                backgroundContent.style.opacity = backgroundOpacity;
+                mainContent.style.opacity = mainOpacity;
+                
+                // Update last update date
+                localStorage.setItem('lastOpacityUpdate', new Date().toISOString());
+            }
+            
+            // Update opacity when page loads
+            document.addEventListener('DOMContentLoaded', updateOpacity);
+            
+            // Update opacity every 24 hours
+            setInterval(updateOpacity, 24 * 60 * 60 * 1000);
+      </script>
       </body>
 </html>
